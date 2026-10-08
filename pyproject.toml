@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gemini-tool-agent"
+version = "0.1.0"
+description = "Terminal chat agent that answers with local Python tools via the Gemini Interactions API."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "google-genai>=2.28",
+    "python-dotenv>=1.0",
+    "tzdata; sys_platform == 'win32'",  # Windows has no IANA time zone database
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+# SDKs for side experiments; not used by the agent.
+experiments = ["anthropic", "openai", "httpx", "requests", "pydantic", "tiktoken", "rich"]
+
+[project.scripts]
+gemini-agent = "gemini_tool_agent.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
